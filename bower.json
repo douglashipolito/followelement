@@ -1,0 +1,12 @@
+{
+  "name": "followelement",
+  "version": "0.0.0",
+  "main": "dist/followelement.min.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test"
+  ],
+  "dependencies": {}
+}

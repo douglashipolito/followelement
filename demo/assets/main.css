@@ -1,0 +1,28 @@
+/* Styles for followelement demo
+ *
+ * Author: Douglas Hipolito
+ */
+
+/* === resets === */
+
+/* === defaults === */
+.hide {
+  display: none;
+}
+.show {
+  display: block;
+}
+.hidden {
+  visibility: hidden;
+}
+/* === generic styles */
+
+/* === layout === */
+
+/* === modules === */
+
+/* === specific styles */
+
+/* === subsections === */
+
+/* === hacks / overrides === */
