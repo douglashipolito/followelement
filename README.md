@@ -20,7 +20,22 @@ Or grab the [source](https://github.com/douglashipolito/followelement/dist/follo
 
 Basic usage is as follows:
 
-    followelement();
+    var test = followElement('.test-1', {
+                  context: 'body',
+                  debug: true
+                })
+                .insert(function () {
+                  console.log('on insert');
+                })
+                .remove(function () {
+                  console.log('on remove');
+                })
+                .appear(function () {
+                  console.log('on appear');
+                })
+                .disappear(function () {
+                  console.log('on disappear');
+                });
 
 For advanced usage, see the documentation.
 
