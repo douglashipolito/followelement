@@ -1,19 +1,7 @@
-/*
-  Visibility Observer library
- */
-(function(root, undefined) {
-  "use strict";
-
-  var //Mutation Observer
-      MutationObserver = root.MutationObserver || root.WebKitMutationObserver || root.MozMutationObserver,
-
-      //Flag for cssObserverStarted
+  var MutationObserver = root.MutationObserver || root.WebKitMutationObserver || root.MozMutationObserver,
       cssObserverStarted,
-
-      //All instances of followElement
       instances = [],
 
-      //Utils
       util = {
         find: document.querySelector.bind(document),
         findAll: document.querySelectorAll.bind(document),
@@ -40,20 +28,18 @@
 
           return elementMatches.call(this, selector);
         }
+      },
+
+      logSignature = function (selector, type, message) {
+        return '##VisibilityObserver##\n\n'
+             + 'Selector = ' + selector + '\n'
+             + 'Action = ' + type + ' \n\n'
+             + 'Message = '  + message;
       };
 
-  /**
-   * Follow Element constructor
-   *
-   * @param  {String} selector Element selector
-   * @param  {Object|Function} selector Accepted an callback or object of options
-   *
-   * @return {followElement} it will be return a follow element instance
-   */
   function followElement(selector, options) {
     var currentInstance = this;
 
-    //If it is not calling with the "new" keyword
     if(!(currentInstance instanceof followElement)) {
       var o = Object.create(followElement.prototype);
       o.constructor.apply(o, arguments);
@@ -119,19 +105,9 @@
     }
   }
 
-  //FollowElement prototype
   followElement.prototype = {
     constructor: followElement,
 
-    /**
-     * with this method is possible to listen all
-     * methods those are possible to be observed
-     *
-     * @param  {String}   event    Event that is necessary to be observed
-     * @param  {Function} callback Function to call when this event is triggered
-     *
-     * @return {followElement} returns this current instance
-     */
     connect: function (event, callback) {
       if(!this.events[event]) {
         return false;
@@ -141,129 +117,56 @@
       return this;
     },
 
-    /**
-     * remove all observers
-     *
-     * @return {followElement} returns this current instance
-     */
     disconnect: function () {
       disconnectObservers.call(this);
-      return this;
     },
 
-    /**
-     * Allows observing when the element of this instance is inserted on DOM.
-     * When this element is inserted or the element has already been present on DOM,
-     * the callback function will be called.
-     *
-     * @param  {Function} callback Function to call when this event is triggered
-     * @param  {String|ElementNode} context The context to start the search for the element
-     *
-     * @return {followElement} returns this current instance
-     */
     insert: function (callback, context) {
       this.observer.observe('insert', callback, context);
       return this;
     },
 
-    /**
-     * Allows observing when the element of this instance is removed from DOM.
-     * The callback function will be called when this element is removed.
-     *
-     * @param  {Function} callback  Function to call when this event is triggered
-     * @param  {String|ElementNode} context The context to start the search for the element
-     *
-     * @return {followElement} returns this current instance
-     */
     remove: function (callback, context) {
       this.observer.observe('remove', callback, context);
       return this;
     },
 
-    /**
-     * Observe when an element is shown, that means, if it is not display: none,
-     * has content, doesn't have content but has width and height..
-     *
-     * @param  {Function} callback Function to call when this event is triggered
-     *
-     * @return {followElement} returns this current instance
-     */
     appear: function (callback) {
       this.observer.observe('appear', callback);
       return this;
     },
 
-    /**
-     * Observe when an element is hidden, that means, if it is display: none,
-     * hasn't content or width and height.
-     *
-     * @param  {Function} callback Function to call when this event is triggered
-     *
-     * @return {followElement} returns this current instance
-     */
     disappear: function (callback) {
       this.observer.observe('disappear', callback);
       return this;
     },
 
-    /**
-     * Allows to pause all the current instance observers
-     *
-     * @return {followElement} returns this current instance
-     */
     pause: function () {
       this.observer.paused = true;
       return this;
     },
 
-    /**
-     * Allows to resume all the current instance observers
-     *
-     * @return {followElement} returns this current instance
-     */
     resume: function () {
       this.observer.paused = false;
       return this;
     },
 
-    /**
-     * Enable or disable the debug
-     *
-     * @return {followElement} returns this current instance
-     */
     debug: function () {
       this._debug = !this._debug;
       return this;
     },
 
-    /**
-     * Set the main context to start the search for an element
-     * It will be used when an element is inserted or removed
-     *
-     * @param  {String|ElementNode} context The context to start the search for the element
-     *
-     * @return {followElement} returns this current instance
-     */
     setContext: function (context) {
       checkContext.call(this, context);
       return this;
     }
   };
 
-  /**
-   * validation for selector's context
-   * it will validate if there is already a context
-   *
-   * @param  {String|ElementNode} context context The context to start the search for the element
-   * @param  {String} type Type of context, like appear, disappear, inserted and removed
-   *
-   * @return {ElementNode} the current context
-   */
   function checkContext(context, type) {
     var currentInstance = this;
 
     if(!context && !currentInstance.context) {
-      throw new Error(logSignature(this.selector, type, 'You must pass the "context" param'));
+      throw new Error(logSignature(this.selector, type, 'You need to pass the "context" param'));
     }
 
     if(context && context.nodeType !== 1) {
@@ -277,10 +180,6 @@
     return currentInstance.context;
   }
 
-  /**
-   * Disconnect all observers from this instance
-   *
-   */
   function disconnectObservers() {
     var currentInstance = this,
         styleElement = util.findAll('style.' + getStylesClass.call(currentInstance, currentInstance.selector));
@@ -297,13 +196,6 @@
     currentInstance.observer.disconnected = true;
   }
 
-  /**
-   * Set a new observer and the properly methods and status
-   *
-   * @param  {String} selector Element selector
-   *
-   * @return {Object} Observer methods and status
-   */
   function getObserver(selector) {
     var currentInstance = this,
         _observer;
@@ -344,15 +236,6 @@
     };
   }
 
-  /**
-   * Verify if this element matches this current selector instance
-   * and call the properly callback function using its type
-   *
-   * @param  {ElementNode} element Element to match
-   * @param  {String} type Type of this request
-   *
-   * @return {Boolean} return true if element matches or false if doesn't
-   */
   function elementMatch(element, type) {
     var currentInstance = this,
         currentType;
@@ -386,12 +269,6 @@
     return false;
   }
 
-  /**
-   * Attaches a new instance of a dom mutation observer using fallbacks if it's necessary
-   *
-   * @param  {ElementNode} context context The context to start the search for the element
-   *
-   */
   function insertObserver(context) {
     var currentInstance = this,
         currentElements = util.findAll(this.selector);
@@ -407,13 +284,6 @@
     }
   }
 
-  /**
-   * Create a new instance of dom mutation server
-   *
-   * @param {ElementNode} context context The context to start the search for the element
-   *
-   * @return {MutationObserver} New mutation observer instance
-   */
   function setMutationObserver(context) {
     var currentInstance = this,
         MutationObserverInstance;
@@ -449,13 +319,6 @@
     return MutationObserverInstance;
   }
 
-  /**
-   * Create a new instance of dom mutation observer using Mutation Events as fallback
-   *
-   * @param {ElementNode} context context The context to start the search for the element
-   *
-   * @return {MutationObserver} New mutation observer fallback instance
-   */
   function setMutationObserverFallback(context) {
     var currentInstance = this,
         insertedListener = function (event) {
@@ -488,11 +351,6 @@
     };
   }
 
-  /**
-   * Check if MutationObserver exists in this browser
-   *
-   * @return {Boolean} Returns true if this browser supports this feature or false if it doesn't
-   */
   function canIUseMutationObserver() {
     var canIUse = !!MutationObserver;
 
@@ -504,15 +362,12 @@
     return canIUse;
   }
 
-  /**
-   * It is a simple way to check whether an element has been appeared or not
-   * using keyframes of css3.
-   *
-   * This technique was first outlined at [Back Alley Coder](http://www.backalleycoder.com/2012/04/25/i-want-a-damnodeinserted/)
-   * and it has a better performance than using MutationEvents
-   *
-   * @param  {String} selector Element selector
-   */
+  function checkRemove() {
+    var instance = this;
+
+    instance.observer._checkRemove = true;
+  }
+
   function appearedObserver(selector) {
     var events = ['animationstart', 'webkitAnimationStart', 'oanimationstart', 'MSAnimationStart'],
         options = {
@@ -593,30 +448,12 @@
     }
   }
 
-   /**
-   * Defines that we need to check if the element of this instance has been removed
-   *
-   */
-  function checkRemove() {
-    var instance = this;
-
-    instance.observer._checkRemove = true;
-  }
-
-  /**
-   * Defines that we need to check if the element of this instance has been disappeared
-   */
   function checkDisappear() {
     var instance = this;
 
     instance.observer._checkDisappear = true;
   }
 
-  /**
-   * Check if the element of this instance is still visible
-   *
-   * @param  {ElementNode} element Element to check
-   */
   function disappearedObserver(element) {
     var instance = this,
         timeoutId,
@@ -634,25 +471,12 @@
     }, timeoutTime);
   }
 
-  /**
-   * Check if this element is not visible
-   *
-   * @param  {ElementNode} element Element to check
-   * @return {Boolean}  returns true or false depending of its visibility
-   */
   function elementIsHidden(element) {
     return element !== null
           && (element.offsetWidth === 0 && element.offsetHeight === 0)
           || element.offsetParent === null;
   }
 
-  /**
-   * css3 keyframe string
-   *
-   * It's for the appeared observer
-   *
-   * @return {String} new keyframe string
-   */
   function getKeyframeString() {
     var baseKeyframe = ' elementAppeared { from { outline: 1px solid transparent; }' +
                                         '  to { outline: 0px solid transparent; } }',
@@ -666,24 +490,10 @@
     return keyframeString;
   }
 
-  /**
-   * Class for style element
-   *
-   * @param  {String} selector Selector of the element
-   *
-   * @return {String} new class of element selector
-   */
   function getStylesClass(selector) {
     return selector.replace(".", "") + '-animation-' + this.instanceIndex;
   }
 
-  /**
-   * Css3 animation string
-   *
-   * @param  {String} selector Selector of the element
-   *
-   * @return {String} new css3 animation string
-   */
   function getAnimationNameString(selector) {
     return selector + ' { animation-name: elementAppeared;' +
              '-webkit-animation-name: elementAppeared;' +
@@ -691,26 +501,8 @@
              '-webkit-animation-duration: 0.001s; }';
   }
 
-  /**
-   * Simple signature for logs
-   *
-   * @param  {String} selector The selector
-   * @param  {String} type     The type of this log, like appear or inserted
-   * @param  {String} message  The message of this log
-   *
-   * @return {String}          Returns a new formatted log string
-   */
-  function logSignature(selector, type, message) {
-    return '##VisibilityObserver##\n\n'
-         + 'Selector = ' + selector + '\n'
-         + 'Action = ' + type + ' \n\n'
-         + 'Message = '  + message;
-  }
-
-  // Version
+  // Version.
   followElement.version = '0.0.0';
 
-  // Export to the root, which is probably `window`
+  // Export to the root, which is probably `window`.
   root.followElement = followElement;
-
-}(this));

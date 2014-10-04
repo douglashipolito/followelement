@@ -245,10 +245,13 @@
   };
 
   /**
-   * [checkContext description]
-   * @param  {[type]} context [description]
-   * @param  {[type]} type    [description]
-   * @return {[type]}         [description]
+   * validation for selector's context
+   * it will validate if there is already a context
+   *
+   * @param  {String|ElementNode} context context The context to start the search for the element
+   * @param  {String} type Type of context, like appear, disappear, inserted and removed
+   *
+   * @return {ElementNode} the current context
    */
   function checkContext(context, type) {
     var currentInstance = this;
@@ -269,8 +272,8 @@
   }
 
   /**
-   * [disconnectObservers description]
-   * @return {[type]} [description]
+   * Disconnect all observers from this instance
+   *
    */
   function disconnectObservers() {
     var currentInstance = this,
@@ -289,9 +292,11 @@
   }
 
   /**
-   * [getObserver description]
-   * @param  {[type]} selector [description]
-   * @return {[type]}          [description]
+   * Set a new observer and the properly methods and status
+   *
+   * @param  {String} selector Element selector
+   *
+   * @return {Object} Observer methods and status
    */
   function getObserver(selector) {
     var currentInstance = this,
@@ -334,10 +339,13 @@
   }
 
   /**
-   * [elementMatch description]
-   * @param  {[type]} element [description]
-   * @param  {[type]} type    [description]
-   * @return {[type]}         [description]
+   * Verify if this element matches this current selector instance
+   * and call the properly callback function using its type
+   *
+   * @param  {ElementNode} element Element to match
+   * @param  {String} type Type of this request
+   *
+   * @return {Boolean} return true if element matches or false if doesn't
    */
   function elementMatch(element, type) {
     var currentInstance = this,
@@ -373,9 +381,10 @@
   }
 
   /**
-   * [insertObserver description]
-   * @param  {[type]} context [description]
-   * @return {[type]}         [description]
+   * Attaches a new instance of a dom mutation observer using fallbacks if it's necessary
+   *
+   * @param  {ElementNode} context context The context to start the search for the element
+   *
    */
   function insertObserver(context) {
     var currentInstance = this,
@@ -393,8 +402,11 @@
   }
 
   /**
-   * [setMutationObserver description]
-   * @param {[type]} context [description]
+   * Create a new instance of dom mutation server
+   *
+   * @param {ElementNode} context context The context to start the search for the element
+   *
+   * @return {MutationObserver} New mutation observer instance
    */
   function setMutationObserver(context) {
     var currentInstance = this,
@@ -432,8 +444,11 @@
   }
 
   /**
-   * [setMutationObserverFallback description]
-   * @param {[type]} context [description]
+   * Create a new instance of dom mutation observer using Mutation Events as fallback
+   *
+   * @param {ElementNode} context context The context to start the search for the element
+   *
+   * @return {MutationObserver} New mutation observer fallback instance
    */
   function setMutationObserverFallback(context) {
     var currentInstance = this,
@@ -468,8 +483,9 @@
   }
 
   /**
-   * [canIUseMutationObserver description]
-   * @return {[type]} [description]
+   * Check if MutationObserver exists in this browser
+   *
+   * @return {Boolean} Returns true if this browser supports this feature or false if it doesn't
    */
   function canIUseMutationObserver() {
     var canIUse = !!MutationObserver;
@@ -483,19 +499,13 @@
   }
 
   /**
-   * [checkRemove description]
-   * @return {[type]} [description]
-   */
-  function checkRemove() {
-    var instance = this;
-
-    instance.observer._checkRemove = true;
-  }
-
-  /**
-   * [appearedObserver description]
-   * @param  {[type]} selector [description]
-   * @return {[type]}          [description]
+   * It is a simple way to check whether an element has been appeared or not
+   * using keyframes of css3.
+   *
+   * This technique was first outlined at [Back Alley Coder](http://www.backalleycoder.com/2012/04/25/i-want-a-damnodeinserted/)
+   * and it has a better performance than using MutationEvents
+   *
+   * @param  {String} selector Element selector
    */
   function appearedObserver(selector) {
     var events = ['animationstart', 'webkitAnimationStart', 'oanimationstart', 'MSAnimationStart'],
@@ -577,9 +587,18 @@
     }
   }
 
+   /**
+   * Defines that we need to check if the element of this instance has been removed
+   *
+   */
+  function checkRemove() {
+    var instance = this;
+
+    instance.observer._checkRemove = true;
+  }
+
   /**
-   * [checkDisappear description]
-   * @return {[type]} [description]
+   * Defines that we need to check if the element of this instance has been disappeared
    */
   function checkDisappear() {
     var instance = this;
@@ -588,9 +607,9 @@
   }
 
   /**
-   * [disappearedObserver description]
-   * @param  {[type]} element [description]
-   * @return {[type]}         [description]
+   * Check if the element of this instance is still visible
+   *
+   * @param  {ElementNode} element Element to check
    */
   function disappearedObserver(element) {
     var instance = this,
@@ -610,9 +629,10 @@
   }
 
   /**
-   * [elementIsHidden description]
-   * @param  {[type]} element [description]
-   * @return {[type]}         [description]
+   * Check if this element is not visible
+   *
+   * @param  {ElementNode} element Element to check
+   * @return {Boolean}  returns true or false depending of its visibility
    */
   function elementIsHidden(element) {
     return element !== null
@@ -621,8 +641,11 @@
   }
 
   /**
-   * [getKeyframeString description]
-   * @return {[type]} [description]
+   * css3 keyframe string
+   *
+   * It's for the appeared observer
+   *
+   * @return {String} new keyframe string
    */
   function getKeyframeString() {
     var baseKeyframe = ' elementAppeared { from { outline: 1px solid transparent; }' +
@@ -638,18 +661,22 @@
   }
 
   /**
-   * [getStylesClass description]
-   * @param  {[type]} selector [description]
-   * @return {[type]}          [description]
+   * Class for style element
+   *
+   * @param  {String} selector Selector of the element
+   *
+   * @return {String} new class of element selector
    */
   function getStylesClass(selector) {
     return selector.replace(".", "") + '-animation-' + this.instanceIndex;
   }
 
   /**
-   * [getAnimationNameString description]
-   * @param  {[type]} selector [description]
-   * @return {[type]}          [description]
+   * Css3 animation string
+   *
+   * @param  {String} selector Selector of the element
+   *
+   * @return {String} new css3 animation string
    */
   function getAnimationNameString(selector) {
     return selector + ' { animation-name: elementAppeared;' +
@@ -664,6 +691,7 @@
    * @param  {String} selector The selector
    * @param  {String} type     The type of this log, like appear or inserted
    * @param  {String} message  The message of this log
+   *
    * @return {String}          Returns a new formatted log string
    */
   function logSignature(selector, type, message) {
@@ -673,8 +701,8 @@
          + 'Message = '  + message;
   }
 
-  // Version.
+  // Version
   followElement.version = '0.0.0';
 
-  // Export to the root, which is probably `window`.
+  // Export to the root, which is probably `window`
   root.followElement = followElement;
