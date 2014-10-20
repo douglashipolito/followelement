@@ -17,19 +17,14 @@ module.exports = function(config) {
 
     //Files
     files: [
+      //Helper
+      'demo/assets/util.js',
+
       //Lib
       'dist/followelement.js',
 
       //Tests
-      'test/spec/*.js',
-
-      //Data
-      {
-        pattern:  'data/*',
-        watched:  true,
-        served:   true,
-        included: false
-      }
+      'test/spec/*.js'
     ],
 
     reporters: ['dots', 'saucelabs'],
@@ -40,7 +35,7 @@ module.exports = function(config) {
     },
 
     sauceLabs: {
-      testName: 'Visibility Observer - tests',
+      testName: 'Follow Element - tests',
       recordScreenshots: false
     },
 

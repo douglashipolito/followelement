@@ -1,4 +1,5 @@
 module.exports = function(grunt) {
+  var jade = require('jade');
 
   grunt.initConfig({
 
@@ -51,6 +52,15 @@ module.exports = function(grunt) {
       }
     },
 
+    wiredep: {
+      defaultBower: {
+        src: [
+          'demo/*.html',
+          'test/*.jade'
+        ]
+      }
+    },
+
     jsdoc : {
         dist : {
             src: ['src/main.js', 'test/*.js'],
@@ -70,7 +80,7 @@ module.exports = function(grunt) {
     watch: {
       test: {
         files: ['Gruntfile.js', '<%= concat.dist.src %>', 'test/**/*.js'],
-        tasks: ['compile', 'jasmine']
+        tasks: ['test-dev']
       },
 
       compile: {
@@ -88,12 +98,50 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-jsdoc');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-wiredep');
 
   //Generate doc
   grunt.registerTask('docs', ['jsdoc']);
 
   //Compile
   grunt.registerTask('compile', ['concat', 'jshint', 'uglify']);
+
+  //Bower install
+  grunt.registerTask('bower', ['wiredep']);
+
+  //Create a index of tests
+  grunt.registerTask('tests-index', 'Create a simple index of tests', function () {
+    var testsDirMapping = {
+          ci: [],
+          dev: []
+        },
+        html;
+
+    //Parse html folder
+    grunt.file.recurse('test/html', function (abspath, rootdir, subdir, filename) {
+      var type,
+          browser;
+
+      subdir = subdir.split('/');
+
+      //Type of test(CI or DEV)
+      type = subdir[0];
+
+      //Browser
+      browser = subdir[1];
+
+      testsDirMapping[type].push(browser);
+    });
+
+    //Run get bower_assets
+    grunt.task.run('wiredep:defaultBower');
+
+    html = jade.renderFile('test/_jade_template.jade', {
+      testsDirMapping: testsDirMapping
+    });
+
+    grunt.file.write('test/index.html', html);
+  });
 
   grunt.registerTask('test-saucelabs', [
     'karma:sl_windows_7_ie',
@@ -115,9 +163,11 @@ module.exports = function(grunt) {
     testSubTasks.push('karma:unit');
   }
 
+  testSubTasks.push('tests-index');
+
   grunt.registerTask('test', testSubTasks);
-  grunt.registerTask('test-dev', ['compile', 'karma:unit']);
-  grunt.registerTask('test-ci', ['compile', 'test-saucelabs']);
+  grunt.registerTask('test-dev', ['compile', 'karma:unit', 'tests-index']);
+  grunt.registerTask('test-ci', ['compile', 'test-saucelabs', 'tests-index']);
 
   //Build tasks
   grunt.registerTask('build-dev', ['test-dev', 'docs']);

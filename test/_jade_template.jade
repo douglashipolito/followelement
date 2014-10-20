@@ -1,0 +1,35 @@
+doctype html
+html(lang="en")
+  head
+    title Follow Element tests index
+
+    // bower:css
+    link(rel='stylesheet', href='../bower_components/bootstrap/dist/css/bootstrap.css')
+    // endbower
+
+    style.
+      .type-title {
+        text-transform: uppercase;
+      }
+
+  body
+    div.container
+      h1 index
+      p You can see here the index of all tests that have already been done
+
+      if testsDirMapping.ci.length || testsDirMapping.dev.length
+        section
+          each browsers, type in testsDirMapping
+            h2.type-title= type
+            ul
+              if browsers.length
+                each browser in browsers
+                  li
+                    a(href="html/#{type}/#{browser}")=browser
+               else
+                li There are no tests
+
+    // bower:js
+    script(src='../bower_components/jquery/dist/jquery.js')
+    script(src='../bower_components/bootstrap/dist/js/bootstrap.js')
+    // endbower

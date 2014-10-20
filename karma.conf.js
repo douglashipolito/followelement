@@ -13,19 +13,14 @@ module.exports = function(config) {
 
     //Files
     files: [
+      //Helper
+      'demo/assets/util.js',
+
       //Lib
       'dist/followelement.js',
 
       //Tests
-      'test/spec/*.js',
-
-      //Data
-      {
-        pattern:  'data/*',
-        watched:  true,
-        served:   true,
-        included: false
-      }
+      'test/spec/*.js'
     ],
 
     runnerPort: 9876,

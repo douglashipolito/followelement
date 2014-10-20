@@ -2,33 +2,26 @@
 <html>
   <head>
     <title>followelement demo</title>
-    <link rel="stylesheet" href="./assets/normalize.css" />
+    <!-- bower:css -->
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
+    <!-- endbower -->
     <link rel="stylesheet" href="./assets/main.css" />
   </head>
   <body>
-    <h1>followelement demo</h1>
-    <div class="test-1 hide"></div>
 
-    <p>See the <a href="http://douglashipolito.github.io/followelement">project homepage</a>.
-    <p>Check out the <a href="https://github.com/douglashipolito/followelement">project repo</a>.
-    <p>Copyright 2014 Douglas Hipolito</p>
+    <div class="container">
+      <h1>followelement demo</h1>
+      <div class="test-1 hide"></div>
 
+      <p>See the <a href="http://douglashipolito.github.io/followelement">project homepage</a>.
+      <p>Check out the <a href="https://github.com/douglashipolito/followelement">project repo</a>.
+      <p>Copyright 2014 Douglas Hipolito</p>
+    </div>
+
+    <script src="assets/util.js"></script>
     <script src="./../dist/followelement.js"></script>
 
     <script>
-      function insertNewElement(classAttr, hide) {
-        var body = document.querySelector('body'),
-            element = document.createElement('div');
-
-        element.classList.add(classAttr || 'element-' + document.querySelectorAll('div').length);
-
-        if(hide) {
-          element.classList.add('hide');
-        }
-
-        body.appendChild(element);
-      }
-
       var first = followElement('.test-1', {
                     context: 'body',
                     debug: true

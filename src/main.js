@@ -9,8 +9,12 @@
 
       //Utils
       util = {
-        find: document.querySelector.bind(document),
-        findAll: document.querySelectorAll.bind(document),
+        find: function (selector) {
+         return document.querySelector(selector);
+        },
+        findAll: function (selector) {
+          return document.querySelectorAll(selector);
+        },
         forEach: Array.prototype.forEach,
 
         /* global Element */
@@ -39,7 +43,7 @@
   /**
    * Follow Element constructor
    *
-   * @param  {String} selector Element selector
+   * @param  {String|ElementNode} selector Element selector or element node
    * @param  {Object|Function} selector Accepted an callback or object of options
    *
    * @return {followElement} it will be return a follow element instance
