@@ -245,11 +245,12 @@
      * It will be used when an element is inserted or removed
      *
      * @param  {String|ElementNode} context The context to start the search for the element
+     * @param  {String} type Type of context, like appear, disappear, inserted and removed
      *
      * @return {followElement} returns this current instance
      */
-    setContext: function (context) {
-      checkContext.call(this, context);
+    setContext: function (context, type) {
+      checkContext.call(this, context, type, true);
       return this;
     }
   };
@@ -260,14 +261,19 @@
    *
    * @param  {String|ElementNode} context context The context to start the search for the element
    * @param  {String} type Type of context, like appear, disappear, inserted and removed
+   * @param  {Boolean} force Force a new context assigment
    *
    * @return {ElementNode} the current context
    */
-  function checkContext(context, type) {
+  function checkContext(context, type, force) {
     var currentInstance = this;
 
     if(!context && !currentInstance.context) {
-      throw new Error(logSignature(this.selector, type, 'You must pass the "context" param'));
+      throw new Error('You must define the "context" param');
+    }
+
+    if(typeof context !== 'undefined' && typeof type !== 'undefined' && force) {
+      currentInstance.context = context;
     }
 
     if(context && context.nodeType !== 1) {
