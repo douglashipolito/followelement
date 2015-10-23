@@ -51,7 +51,7 @@
   function followElement(selector, options) {
     var currentInstance = this;
 
-    //If it is not calling with the "new" keyword
+    //If it is not be calling with the "new" keyword
     if(!(currentInstance instanceof followElement)) {
       var o = Object.create(followElement.prototype);
       o.constructor.apply(o, arguments);
@@ -90,7 +90,7 @@
 
     currentInstance.observer = getObserver.call(currentInstance, selector);
 
-    //If the second is a function, it will treated as callback of appear observer
+    //it will be treated as callback of appear observer if the second param is a function
     if(options && typeof options === 'function') {
       currentInstance.observer.observe('appear', options);
     }
@@ -103,12 +103,12 @@
         currentInstance._debug = options.debug;
       }
 
-      //Set the context to find, in the case of Insert and Remove Observer
+      //Set the context to find, Insert and Remove Observer
       if(options.context) {
         checkContext.call(currentInstance, options.context);
       }
 
-      //Loop through events and attach all that have been defined
+      //Loop through events and attach all which have been defined
       util.forEach.call(Object.keys(currentInstance.events), function (eventKey) {
         if(typeof options[eventKey] === 'function') {
           currentInstance.observer.observe(eventKey, options[eventKey]);
@@ -123,9 +123,9 @@
 
     /**
      * with this method is possible to listen all
-     * methods those are possible to be observed
+     * methods which are possible to be observed
      *
-     * @param  {String}   event    Event that is necessary to be observed
+     * @param  {String}   event    Event it is necessary to be observed
      * @param  {Function} callback Function to call when this event is triggered
      *
      * @return {followElement} returns this current instance
@@ -151,11 +151,11 @@
 
     /**
      * Allows observing when the element of this instance is inserted on DOM.
-     * When this element is inserted or the element has already been present on DOM,
+     * When this element is inserted or the element is present in the DOM,
      * the callback function will be called.
      *
      * @param  {Function} callback Function to call when this event is triggered
-     * @param  {String|ElementNode} context The context to start the search for the element
+     * @param  {String|ElementNode} context The context to start searching the element
      *
      * @return {followElement} returns this current instance
      */
@@ -169,7 +169,7 @@
      * The callback function will be called when this element is removed.
      *
      * @param  {Function} callback  Function to call when this event is triggered
-     * @param  {String|ElementNode} context The context to start the search for the element
+     * @param  {String|ElementNode} context The context to start searching the element
      *
      * @return {followElement} returns this current instance
      */
@@ -193,7 +193,7 @@
 
     /**
      * Observe when an element is hidden, that means, if it is display: none,
-     * hasn't content or width and height.
+     * doesn't have content or width and height.
      *
      * @param  {Function} callback Function to call when this event is triggered
      *
@@ -235,7 +235,7 @@
     },
 
     /**
-     * Set the main context to start the search for an element
+     * Set the main context to start searching an element
      * It will be used when an element is inserted or removed
      *
      * @param  {String|ElementNode} context The context to start the search for the element
@@ -251,7 +251,7 @@
 
   /**
    * validation for selector's context
-   * it will validate if there is already a context
+   * it will validate if there is a context
    *
    * @param  {String|ElementNode} context context The context to start the search for the element
    * @param  {String} type Type of context, like appear, disappear, inserted and removed
@@ -393,7 +393,7 @@
   /**
    * Attaches a new instance of a dom mutation observer using fallbacks if it's necessary
    *
-   * @param  {ElementNode} context context The context to start the search for the element
+   * @param  {ElementNode} context context The context to start searching the element
    *
    */
   function insertObserver(context) {
@@ -414,7 +414,7 @@
   /**
    * Create a new instance of dom mutation server
    *
-   * @param {ElementNode} context context The context to start the search for the element
+   * @param {ElementNode} context context The context to start searching for the element
    *
    * @return {MutationObserver} New mutation observer instance
    */
@@ -456,7 +456,7 @@
   /**
    * Create a new instance of dom mutation observer using Mutation Events as fallback
    *
-   * @param {ElementNode} context context The context to start the search for the element
+   * @param {ElementNode} context context The context to start searching for the element
    *
    * @return {MutationObserver} New mutation observer fallback instance
    */
@@ -598,7 +598,7 @@
   }
 
    /**
-   * Defines that we need to check if the element of this instance has been removed
+   * Ccheck if the element of this instance has been removed
    *
    */
   function checkRemove() {
@@ -608,7 +608,7 @@
   }
 
   /**
-   * Defines that we need to check if the element of this instance has been disappeared
+   * Check if the element of this instance has been disappeared
    */
   function checkDisappear() {
     var instance = this;

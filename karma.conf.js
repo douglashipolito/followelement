@@ -14,7 +14,7 @@ module.exports = function(config) {
     //Files
     files: [
       //Helper
-      'demo/assets/util.js',
+      'test/helpers/util.js',
 
       //Lib
       'dist/followelement.js',
@@ -25,11 +25,9 @@ module.exports = function(config) {
 
     runnerPort: 9876,
     browsers: ['PhantomJS', 'Chrome', 'Firefox'],
-    reporters: ['dots', 'html'],
+    reporters: ['dots'],
 
-    htmlReporter: {
-      outputDir: 'test/html/dev'
-    },
+
 
     colors: true
   });

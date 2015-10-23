@@ -46,15 +46,15 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 </style>
  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
  <script>
- 	$(function(){
-		$("a.summaryMenuItem").on("click", function(){
-			$("body").removeClass("showDetails").addClass("showSummary");
-		});
-		$("a.detailsMenuItem").on("click", function(){
-			$("body").addClass("showDetails").removeClass("showSummary");
-		});
+  $(function(){
+    $("a.summaryMenuItem").on("click", function(){
+      $("body").removeClass("showDetails").addClass("showSummary");
+    });
+    $("a.detailsMenuItem").on("click", function(){
+      $("body").addClass("showDetails").removeClass("showSummary");
+    });
 
-	});
+  });
  </script>
 </head>
 
@@ -65,51 +65,51 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 
 
 
-	
-	<span class="passingAlert bar">Passing 5 specs</span>
-	
+  
+  <span class="passingAlert bar">Passing 5 specs</span>
+  
 
 
 </div>
 <div class="results">
-	<div class="summary">
+  <div class="summary">
 
 
-	
-		<div class="suite passed">
-			<span class="description">followElement tests should be able to listen when an element is inserted</span>
-		
-			<div class="specSummary passed">
-			<span class="description">and currentFollowElement should be an instance of followElement</span>
-			</div>
-		
-			<div class="specSummary passed">
-			<span class="description">should throw an error if the context is not defined</span>
-			</div>
-		
-			<div class="specSummary passed">
-			<span class="description">and just &quot;insert&quot; method should have been called</span>
-			</div>
-		
-		</div>
-	
-		<div class="suite passed">
-			<span class="description">followElement tests should be able to listen when an element appears</span>
-		
-			<div class="specSummary passed">
-			<span class="description">and currentFollowElement should be an instance of followElement</span>
-			</div>
-		
-			<div class="specSummary passed">
-			<span class="description">and just &quot;appear&quot; method should have been called</span>
-			</div>
-		
-		</div>
-	
+  
+    <div class="suite passed">
+      <span class="description">followElement tests should be able to listen when an element is inserted</span>
+    
+      <div class="specSummary passed">
+      <span class="description">and currentFollowElement should be an instance of followElement</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should throw an error if the context is not defined</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">and just &quot;insert&quot; method should have been called</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">followElement tests should be able to listen when an element appears</span>
+    
+      <div class="specSummary passed">
+      <span class="description">and currentFollowElement should be an instance of followElement</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">and just &quot;insert&quot; and &quot;appear&quot; methods should have been called</span>
+      </div>
+    
+    </div>
+  
 </div>
 
 <div id="details">
-	
+  
 </div>
 </body>
 </html>

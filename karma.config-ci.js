@@ -18,7 +18,7 @@ module.exports = function(config) {
     //Files
     files: [
       //Helper
-      'demo/assets/util.js',
+      'test/helpers/util.js',
 
       //Lib
       'dist/followelement.js',
@@ -31,7 +31,8 @@ module.exports = function(config) {
     port: 9876,
 
     htmlReporter: {
-      outputDir: 'test/html/ci'
+      outputDir: 'test/html/ci',
+      templatePath: 'test/jasmine_template.html'
     },
 
     sauceLabs: {

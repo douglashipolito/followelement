@@ -46,49 +46,63 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 </style>
  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
  <script>
- 	$(function(){
-		$("a.summaryMenuItem").on("click", function(){
-			$("body").removeClass("showDetails").addClass("showSummary");
-		});
-		$("a.detailsMenuItem").on("click", function(){
-			$("body").addClass("showDetails").removeClass("showSummary");
-		});
+  $(function(){
+    $("a.summaryMenuItem").on("click", function(){
+      $("body").removeClass("showDetails").addClass("showSummary");
+    });
+    $("a.detailsMenuItem").on("click", function(){
+      $("body").addClass("showDetails").removeClass("showSummary");
+    });
 
-	});
+  });
  </script>
 </head>
 
-<body id="HTMLReporter" class="html-reporter">
-<h1>Firefox 31.0.0 (Mac OS X 10.9)</h1>
+<body id="HTMLReporter" class="html-reporter{{#results.hasFailed}} showDetails{{/results.hasFailed}}">
+<h1>{{browserName}}</h1>
 
 <div class="alert">
-
-
-
-	
-	<span class="passingAlert bar">Passing 1 specs</span>
-	
-
-
+{{#results}}
+{{#hasFailed}}
+<span class="failingAlert bar">Failed {{failed}} specs</span>
+<span class="resultsMenu bar">
+<a class="summaryMenuItem" href="#">{{total}} specs<a>|<a class="detailsMenuItem" href="#">{{failed}} failing</a>
+</span>
+{{/hasFailed}}
+{{^hasFailed}}
+  {{#hasSuccess}}
+  <span class="passingAlert bar">Passing {{success}} specs</span>
+  {{/hasSuccess}}
+{{/hasFailed}}
+{{/results}}
 </div>
 <div class="results">
-	<div class="summary">
+  <div class="summary">
 
 
-	
-		<div class="suite passed">
-			<span class="description">some test</span>
-		
-			<div class="specSummary passed">
-			<span class="description">is ready</span>
-			</div>
-		
-		</div>
-	
+  {{#suites}}
+    <div class="suite {{state}}">
+      <span class="description">{{name}}</span>
+    {{#specs}}
+      <div class="specSummary {{state}}">
+      <span class="description">{{description}}</span>
+      </div>
+    {{/specs}}
+    </div>
+  {{/suites}}
 </div>
 
 <div id="details">
-	
+  {{#failedSuites}}
+  {{#specs}}
+  <div class="specDetail {{state}}">
+    <span class="description">{{name}} {{description}}</span>
+    <div class="stackTrace">
+      <div class="resultMessage">{{log}}</div>
+    </div>
+  </div>
+  {{/specs}}
+  {{/failedSuites}}
 </div>
 </body>
 </html>
